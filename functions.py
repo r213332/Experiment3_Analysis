@@ -21,10 +21,19 @@ def getRT(data: pd.DataFrame):
     show = False
     totalShows = 0
     returnData = []
+    wall = 0
+    fixation = 0
+    none = 0
     for index in range(1, len(data)):
         row = data.iloc[index]
         prev = data.iloc[index - 1]
         time = row["RealTime"] - data.iloc[initialIndex]["RealTime"]
+        if row["LookingObject"] == "Fixation":
+            fixation += 1
+        if row["LookingObject"] == "Wall":
+            wall += 1
+        if row["LookingObject"] == "None":
+            none += 1
         if prev["ShowStimulus"] == 0 and row["ShowStimulus"] == 1:
             totalShows += 1
             initialIndex = index
@@ -32,7 +41,6 @@ def getRT(data: pd.DataFrame):
             returnData.append(
                 {
                     "RT": None,
-                    "MeanVelocity": None,
                     "HDegree": row["StimulusHorizontalDegree"],
                     "VDegree": row["StimulusVerticalDegree"],
                 }
@@ -43,12 +51,14 @@ def getRT(data: pd.DataFrame):
         ):
             if time < 2.0 and time > 0.2:
                 returnData[-1]["RT"] = time
-                velocity_sum = 0
-                for j in range(initialIndex, index):
-                    velocity_sum += data.iloc[j]["speed[m/s]"]
-                returnData[-1]["MeanVelocity"] = velocity_sum / (index - initialIndex)
 
             show = False
+
+    print("Wall:", wall)
+    print("Fixation:", fixation)
+    print("None:", none)
+    print("FixationRate:", fixation / (wall + fixation + none))
+    print("-----------------")
 
     return returnData
 

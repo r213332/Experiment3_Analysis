@@ -49,7 +49,6 @@ def RT(subject: str):
     pd.DataFrame(
         {
             "RT": [x["RT"] for x in control],
-            "MeanVelocity": [x["MeanVelocity"] for x in control],
             "HDegree": [x["HDegree"] for x in control],
             "VDegree": [x["VDegree"] for x in control],
         }
@@ -57,7 +56,6 @@ def RT(subject: str):
     pd.DataFrame(
         {
             "RT": [x["RT"] for x in near],
-            "MeanVelocity": [x["MeanVelocity"] for x in near],
             "HDegree": [x["HDegree"] for x in near],
             "VDegree": [x["VDegree"] for x in near],
         }
@@ -65,7 +63,6 @@ def RT(subject: str):
     pd.DataFrame(
         {
             "RT": [x["RT"] for x in far],
-            "MeanVelocity": [x["MeanVelocity"] for x in far],
             "HDegree": [x["HDegree"] for x in far],
             "VDegree": [x["VDegree"] for x in far],
         }
@@ -211,18 +208,22 @@ def RT(subject: str):
     # plt.show()
 
 
-# 1被験者のデータを処理
-# subject = "subjectL"
-# RT(subject)
-
-# 全員のデータを処理
-search_path = os.path.join(".", "data", "*subject*")
-directories = glob.glob(search_path)
-
-# ディレクトリ名のリストを取得
-directory_names = [os.path.basename(directory) for directory in directories]
-
-# print(directory_names)
-for subject in directory_names:
+def main():
+    # 1被験者のデータを処理
+    subject = "subject1"
     RT(subject)
-    print("finish ", subject)
+
+    # 全員のデータを処理
+    # search_path = os.path.join(".", "data", "*subject*")
+    # directories = glob.glob(search_path)
+
+    # # ディレクトリ名のリストを取得
+    # directory_names = [os.path.basename(directory) for directory in directories]
+
+    # # print(directory_names)
+    # for subject in directory_names:
+    #     RT(subject)
+        # print("finish ", subject)
+
+if __name__ == "__main__":
+    main()

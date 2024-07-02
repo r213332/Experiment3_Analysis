@@ -8,12 +8,6 @@ subdirs = subdirs(~ismember({subdirs.name}, {'.', '..'}));  % '.'と'..'を除�
 % RTクラスの配列を宣言
 subjects = RT.empty(0, 0);
 all = RT.empty(1, 0);
-high = RT.empty(1, 0);
-highAll = RT.empty(1, 0);
-medium = RT.empty(1, 0);
-mediumAll = RT.empty(1, 0);
-low = RT.empty(1, 0);
-lowAll = RT.empty(1, 0);
 
 % 各サブディレクトリに対してRTクラスのインスタンスを作成
 for i = 1:length(subdirs)
@@ -35,41 +29,13 @@ for i = 1:length(subdirs)
     
     % RTクラスのインスタンスを作成
     % subjects(i) = RT(subdirName,control, near, far);
-    subject = RT(meta.view,meta.driving_frequency,control, near, far);
+    subject = RT(meta.view,control, near, far);
     subjects = [subjects, subject];
-    if(meta.driving_frequency == "high")
-        high = [high, subject];
-    elseif(meta.driving_frequency == "medium")
-        medium = [medium, subject];
-    elseif(meta.driving_frequency == "low")
-        low = [low, subject];
-    end
 
     if isempty(all)
-        all = RT('All','All',control, near, far);
+        all = RT('All',control, near, far);
     else
         all = all.addData(control, near, far);
-    end
-    if(meta.driving_frequency == "high")
-        if isempty(highAll)
-            highAll = RT('HighAll','High',control, near, far);
-        else
-            highAll = highAll.addData(control, near, far);
-        end
-    end
-    if(meta.driving_frequency == "medium")
-        if isempty(mediumAll)
-            mediumAll = RT('MediumAll','Medium',control, near, far);
-        else
-            mediumAll = mediumAll.addData(control, near, far);
-        end
-    end
-    if(meta.driving_frequency == "low")
-        if isempty(lowAll)
-            lowAll = RT('LowAll','Low',control, near, far);
-        else
-            lowAll = lowAll.addData(control, near, far);
-        end
     end
 
 end
@@ -77,23 +43,8 @@ end
 subjects = sortData(subjects);
 subjects = [subjects, all];
 
-high = sortData(high);
-high = [high, highAll];
-
-medium = sortData(medium);
-medium = [medium, mediumAll];
-
-low = sortData(low);
-low = [low, lowAll];
-
-DFALL = [all,highAll, mediumAll, lowAll];
-
 % 各データを検定結果付きで表示
 showData(subjects, 'PDT_RT_Graph.png');
-showData(high, 'PDT_RT_High_Graph.png');
-showData(medium, 'PDT_RT_Medium_Graph.png');
-showData(low, 'PDT_RT_Low_Graph.png');
-showData(DFALL, 'PDT_RT_DFALL_Graph.png');
 
 % for i = 1:length(subjects)
 %     subject = subjects(i);
