@@ -44,7 +44,9 @@ def RT(subject: str):
     if not os.path.exists("./processedData/" + subject):
         os.makedirs("./processedData/" + subject)
 
-    shutil.copy("./data/" + subject + "/meta.json","./processedData/" + subject + "/meta.json")
+    shutil.copy(
+        "./data/" + subject + "/meta.json", "./processedData/" + subject + "/meta.json"
+    )
 
     pd.DataFrame(
         {
@@ -210,7 +212,7 @@ def RT(subject: str):
 
 def main():
     # 1被験者のデータを処理
-    subject = "subject1"
+    subject = "subject6"
     RT(subject)
 
     # 全員のデータを処理
@@ -223,7 +225,8 @@ def main():
     # # print(directory_names)
     # for subject in directory_names:
     #     RT(subject)
-        # print("finish ", subject)
+    # print("finish ", subject)
+
 
 if __name__ == "__main__":
     main()

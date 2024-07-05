@@ -29,7 +29,7 @@ for i = 1:length(subdirs)
     
     % RTクラスのインスタンスを作成
     % subjects(i) = RT(subdirName,control, near, far);
-    subject = RT(meta.view,control, near, far);
+    subject = RT(meta.name,control, near, far);
     subjects = [subjects, subject];
 
     if isempty(all)
@@ -64,47 +64,47 @@ showData(subjects, 'PDT_RT_Graph.png');
 % disp(N_F_P);
 
 % MissRateの検定&描画
-MissingRate = zeros(length(subjects), 3);
-for i = 1:length(subjects)
-    subject = subjects(i);
+% MissingRate = zeros(length(subjects), 3);
+% for i = 1:length(subjects)
+%     subject = subjects(i);
 
-    [controlMissRate, nearMissRate, farMissRate] = subject.getMissingRate();
-    MissingRate(i,1) = controlMissRate;
-    MissingRate(i,2) = nearMissRate;
-    MissingRate(i,3) = farMissRate;
-end
-[s1_c_h,C_P] = swtest(MissingRate(:,1));
-[s1_n_h,N_P] = swtest(MissingRate(:,2));
-[s1_f_h,F_P] = swtest(MissingRate(:,3));
-disp("MissRateのシャピロウィルク検定");
-disp(C_P);
-disp(N_P);
-disp(F_P);
-% クラスカルワリス検定
+%     [controlMissRate, nearMissRate, farMissRate] = subject.getMissingRate();
+%     MissingRate(i,1) = controlMissRate;
+%     MissingRate(i,2) = nearMissRate;
+%     MissingRate(i,3) = farMissRate;
+% end
+% [s1_c_h,C_P] = swtest(MissingRate(:,1));
+% [s1_n_h,N_P] = swtest(MissingRate(:,2));
+% [s1_f_h,F_P] = swtest(MissingRate(:,3));
+% disp("MissRateのシャピロウィルク検定");
+% disp(C_P);
+% disp(N_P);
+% disp(F_P);
+% % クラスカルワリス検定
+% % figure;
+% % [subject_p,subject_tbl,subject_stats] = kruskalwallis(MissingRate, [], 'off');
+% % disp("MissRateのクラスカルワリス検定");
+% % disp(subject_p);
+% % result = multcompare(subject_stats);
+% % medianMissRate = median(MissingRate);
+% % bar(medianMissRate);
+
+% % ANOVA
 % figure;
-% [subject_p,subject_tbl,subject_stats] = kruskalwallis(MissingRate, [], 'off');
-% disp("MissRateのクラスカルワリス検定");
-% disp(subject_p);
-% result = multcompare(subject_stats);
-% medianMissRate = median(MissingRate);
-% bar(medianMissRate);
+% p = anova1(MissingRate);
+% meanMissRate = mean(MissingRate);
+% stdMissRate = std(MissingRate);
+% bar(meanMissRate);
+% hold on;
+% errorbar(meanMissRate, stdMissRate, 'k', 'linestyle', 'none');
 
-% ANOVA
-figure;
-p = anova1(MissingRate);
-meanMissRate = mean(MissingRate);
-stdMissRate = std(MissingRate);
-bar(meanMissRate);
-hold on;
-errorbar(meanMissRate, stdMissRate, 'k', 'linestyle', 'none');
+% set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1]);
+% fontsize(gcf,24,'points')
+% ylim([0, 1.0]);
+% ylabel("見逃し率の平均");
+% xticklabels(["対照条件", "近接条件", "遠方条件"]);
 
-set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1]);
-fontsize(gcf,24,'points')
-ylim([0, 1.0]);
-ylabel("見逃し率の平均");
-xticklabels(["対照条件", "近接条件", "遠方条件"]);
-
-saveas(gcf, fullfile('./graphs', 'PDT_RT_Miss_Graph.png'));
+% saveas(gcf, fullfile('./graphs', 'PDT_RT_Miss_Graph.png'));
 
 function sortedData = sortData(data)
     % subjects配列からnameプロパティの値を抽出
@@ -250,7 +250,7 @@ function showData(subjects,fileName)
     fontsize(gcf,24,'points')
     title("PDTへの反応時間（中央値）");
     ylabel("反応時間[s]");
-    ylim([0, 1.5]);
+    ylim([0, 1.3]);
     legend("対照条件", "近接条件", "遠方条件",'四分位範囲','',''); 
     subjectNames = {};
     for i = 1:length(subjects)

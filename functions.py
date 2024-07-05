@@ -57,7 +57,8 @@ def getRT(data: pd.DataFrame):
     print("Wall:", wall)
     print("Fixation:", fixation)
     print("None:", none)
-    print("FixationRate:", fixation / (wall + fixation + none))
+    if fixation != 0 and wall != 0 and none != 0:
+        print("FixationRate:", fixation / (wall + none))
     print("-----------------")
 
     return returnData
