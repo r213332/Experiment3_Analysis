@@ -53,6 +53,7 @@ def RT(subject: str):
             "RT": [x["RT"] for x in control],
             "HDegree": [x["HDegree"] for x in control],
             "VDegree": [x["VDegree"] for x in control],
+            "GazeValid": [x["GazeValid"] for x in control],
         }
     ).to_csv("./processedData/" + subject + "/controlRT.csv", index=False)
     pd.DataFrame(
@@ -60,6 +61,7 @@ def RT(subject: str):
             "RT": [x["RT"] for x in near],
             "HDegree": [x["HDegree"] for x in near],
             "VDegree": [x["VDegree"] for x in near],
+            "GazeValid": [x["GazeValid"] for x in near],
         }
     ).to_csv("./processedData/" + subject + "/nearRT.csv", index=False)
     pd.DataFrame(
@@ -67,6 +69,7 @@ def RT(subject: str):
             "RT": [x["RT"] for x in far],
             "HDegree": [x["HDegree"] for x in far],
             "VDegree": [x["VDegree"] for x in far],
+            "GazeValid": [x["GazeValid"] for x in far],
         }
     ).to_csv("./processedData/" + subject + "/farRT.csv", index=False)
 
@@ -212,7 +215,7 @@ def RT(subject: str):
 
 def main():
     # 1被験者のデータを処理
-    subject = "subject6"
+    subject = "subject13"
     RT(subject)
 
     # 全員のデータを処理
@@ -225,7 +228,7 @@ def main():
     # # print(directory_names)
     # for subject in directory_names:
     #     RT(subject)
-    # print("finish ", subject)
+    #     print("finish ", subject)
 
 
 if __name__ == "__main__":
