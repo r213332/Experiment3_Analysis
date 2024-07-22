@@ -125,10 +125,12 @@ def getGazeDistribution(data: pd.DataFrame):
             c = i / n
             degree = np.rad2deg(np.arccos(np.clip(c, -1.0, 1.0)))
             deltaTime = row["RealTime"] - data.iloc[index - 1]["RealTime"]
-            if(deltaTime > 1.0):
+            if deltaTime > 1.0:
                 GazeVelocity = None
             else:
-                GazeVelocity = degree / (row["RealTime"] - data.iloc[index - 1]["RealTime"])
+                GazeVelocity = degree / (
+                    row["RealTime"] - data.iloc[index - 1]["RealTime"]
+                )
             # 頭部の位置を含んだ視線ベクトルの取得
             x_2 = (
                 row["GazeRay_Direction_x"] ** 2
@@ -187,11 +189,40 @@ def getGazeDistribution(data: pd.DataFrame):
                 }
             )
 
+    # 外れ値除去
+    # 四分位範囲を2変量に適用
+    if returnData:  # returnDataが空でないことを確認
+        # 各軸の四分位範囲を計算
+        q1_x = np.percentile([item["GazeDistribution_x"] for item in returnData], 25)
+        q3_x = np.percentile([item["GazeDistribution_x"] for item in returnData], 75)
+        iqr_x = q3_x - q1_x
+        lower_bound_x = q1_x - (iqr_x * 1.5)
+        upper_bound_x = q3_x + (iqr_x * 1.5)
+        q1_y = np.percentile([item["GazeDistribution_y"] for item in returnData], 25)
+        q3_y = np.percentile([item["GazeDistribution_y"] for item in returnData], 75)
+        iqr_y = q3_y - q1_y
+        lower_bound_y = q1_y - (iqr_y * 1.5)
+        upper_bound_y = q3_y + (iqr_y * 1.5)
+        for index in range(0, len(returnData)):
+            if (
+                returnData[index]["GazeDistribution_x"] < lower_bound_x
+                or returnData[index]["GazeDistribution_x"] > upper_bound_x
+                or returnData[index]["GazeDistribution_y"] < lower_bound_y
+                or returnData[index]["GazeDistribution_y"] > upper_bound_y
+            ):
+                returnData[index]["GazeDistribution_x"] = None
+                returnData[index]["GazeDistribution_y"] = None
+                returnData[index]["Distancefromfixation"] = None
+                returnData[index]["GazeDegree"] = None
+                if index + 1 < len(returnData):  # インデックス範囲をチェック
+                    returnData[index + 1]["GazeDegree"] = None
+
     return returnData
+
 
 def removeOutlier_GazeDistribution(data: list):
     # GazeDegreeの外れ値を除去
-    # 
+    #
     pass
 
 

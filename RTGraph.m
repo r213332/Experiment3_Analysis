@@ -29,7 +29,7 @@ for i = 1:length(subdirs)
     
     % RTクラスのインスタンスを作成
     % subjects(i) = RT(subdirName,control, near, far);
-    subject = RT(meta.name,control, near, far);
+    subject = RT(meta.view,control, near, far);
     subjects = [subjects, subject];
 
     if isempty(all)
@@ -250,7 +250,7 @@ function showData(subjects,fileName)
     fontsize(gcf,24,'points')
     title("PDTへの反応時間（中央値）");
     ylabel("反応時間[s]");
-    ylim([0, 1.3]);
+    ylim([0, 1.5]);
     legend("対照条件", "近接条件", "遠方条件",'四分位範囲','',''); 
     subjectNames = {};
     for i = 1:length(subjects)

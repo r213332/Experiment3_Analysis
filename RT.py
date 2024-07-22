@@ -215,10 +215,10 @@ def RT(subject: str):
 
 def main():
     # 1被験者のデータを処理
-    subject = "subject13"
+    subject = "subject9"
     RT(subject)
 
-    # 全員のデータを処理
+    # # 全員のデータを処理
     # search_path = os.path.join(".", "data", "*subject*")
     # directories = glob.glob(search_path)
 

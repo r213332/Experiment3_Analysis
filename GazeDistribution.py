@@ -8,6 +8,7 @@ from sklearn.linear_model import LinearRegression
 import glob
 import os
 import shutil
+import json
 
 
 def GazeDistribution(subject: str):
@@ -32,24 +33,34 @@ def GazeDistribution(subject: str):
         near += functions.getGazeDistribution(nearData)
         far += functions.getGazeDistribution(farData)
 
-    for data in [control,near,far]:
+    saccadics = []
+    for i, data in enumerate([control, near, far]):
         # dataがcontrol,near,farのいずれか取得
-        
+
         x = [item["GazeDistribution_x"] for item in data]
         y = [item["GazeDistribution_y"] for item in data]
         diff = [item["Distancefromfixation"] for item in data]
         degree = [item["GazeDegree"] for item in data]
 
-        
-
         saccadic = [
             item["GazeDegree"] for item in data if item["GazeDegree"] is not None
         ]
 
-        saccadic = [
-            item for item in saccadic if item > 200
-        ]
-        print("saccardic: ", len(saccadic))
+        saccadic = [item for item in saccadic if item > 100]
+
+        saccadicCount = 0
+        for item in degree:
+            flag = True
+            dx = None
+            if item is not None and abs(item) > 100 and flag:
+                saccadicCount += 1
+                flag = False
+                dx = 1 if item > 0 else -1
+            if flag == False and dx is not None and item * dx < 0:
+                flag = True
+
+        print("saccardic: ", saccadicCount)
+        saccadics.append(saccadicCount)
         # # データの平均と標準偏差を計算
         # diff_mean, diff_std = np.mean(diff), np.std(diff)
 
@@ -62,19 +73,19 @@ def GazeDistribution(subject: str):
         #     )
         # )
         # # 視線の散布図
+        # plt.figure()
         # plt.scatter(x, y)
         # plt.axis("equal")
         # # 差のヒストグラム
         # plt.hist(diff, bins=20)
 
-        # controlDegreeのグラフ
-        plt.figure()
-        plt.plot(degree)
-        plt.title("Control Degree")
-        plt.xlabel("Index")
-        plt.ylabel("Gaze Degree")
-        plt.ylim(0, 1000)
-    plt.show()
+        # # controlDegreeのグラフ
+        # plt.figure()
+        # plt.plot(degree)
+        # plt.xlabel("Index")
+        # plt.ylabel("Gaze Degree")
+        # plt.ylim(0, 400)
+    # plt.show()
 
     # CSVに出力するためのデータフレームを作成
     # ディレクトリが存在しない場合のみ作成
@@ -110,23 +121,32 @@ def GazeDistribution(subject: str):
         }
     ).to_csv("./processedData/" + subject + "/farGazeData.csv", index=False)
 
+    saccadicsJson = {
+        "control": saccadics[0],
+        "near": saccadics[1],
+        "far": saccadics[2],
+    }
+
+    with open("./processedData/" + subject + "/saccadic_100.json", "w") as f:
+        json.dump(saccadicsJson, f, indent=2)
+
 
 def main():
     # 1被験者のデータを処理
-    subject = "testData"
-    GazeDistribution(subject)
+    # subject = "testData"
+    # GazeDistribution(subject)
 
     # 全員のデータを処理
-    # search_path = os.path.join(".", "data", "*subject*")
-    # directories = glob.glob(search_path)
+    search_path = os.path.join(".", "data", "*subject*")
+    directories = glob.glob(search_path)
 
-    # # ディレクトリ名のリストを取得
-    # directory_names = [os.path.basename(directory) for directory in directories]
+    # ディレクトリ名のリストを取得
+    directory_names = [os.path.basename(directory) for directory in directories]
 
-    # # print(directory_names)
-    # for subject in directory_names:
-    #     GazeDistribution(subject)
-    #     print("finish ", subject)
+    # print(directory_names)
+    for subject in directory_names:
+        GazeDistribution(subject)
+        print("finish ", subject)
 
 
 if __name__ == "__main__":
