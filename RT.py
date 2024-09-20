@@ -215,20 +215,20 @@ def RT(subject: str):
 
 def main():
     # 1被験者のデータを処理
-    subject = "subject9"
-    RT(subject)
+    # subject = "subject9"
+    # RT(subject)
 
-    # # 全員のデータを処理
-    # search_path = os.path.join(".", "data", "*subject*")
-    # directories = glob.glob(search_path)
+    # 全員のデータを処理
+    search_path = os.path.join(".", "data", "*subject*")
+    directories = glob.glob(search_path)
 
-    # # ディレクトリ名のリストを取得
-    # directory_names = [os.path.basename(directory) for directory in directories]
+    # ディレクトリ名のリストを取得
+    directory_names = [os.path.basename(directory) for directory in directories]
 
-    # # print(directory_names)
-    # for subject in directory_names:
-    #     RT(subject)
-    #     print("finish ", subject)
+    # print(directory_names)
+    for subject in directory_names:
+        RT(subject)
+        print("finish ", subject)
 
 
 if __name__ == "__main__":

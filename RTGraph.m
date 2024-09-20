@@ -18,7 +18,7 @@ for i = 1:length(subdirs)
     if exist(fullfile(directory, subdirName, "controlRT.csv"), 'file') ~= 2
         continue;
     end
-    disp(subdirName);
+    % disp(subdirName);
     % 各CSVファイルを読み込む
     control = readtable(fullfile(directory, subdirName, "controlRT.csv"));
     near = readtable(fullfile(directory, subdirName, "nearRT.csv"));
@@ -27,7 +27,7 @@ for i = 1:length(subdirs)
     metaFilePath = fullfile(directory, subdirName, "meta.json");
     metaContent = fileread(metaFilePath);
     meta = jsondecode(metaContent);
-    disp(meta.name);
+    % disp(meta.name);
     
     % RTクラスのインスタンスを作成
     % subjects(i) = RT(subdirName,control, near, far);
@@ -44,6 +44,8 @@ end
 % ソートしてallを結合
 subjects = sortData(subjects);
 subjects = [subjects, all];
+
+subjects
 
 % 各データを検定結果付きで表示
 showData(subjects, 'PDT_RT_Graph.png');
