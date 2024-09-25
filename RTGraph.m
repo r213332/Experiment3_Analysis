@@ -43,9 +43,9 @@ for i = 1:length(subdirs)
 end
 % ソートしてallを結合
 subjects = sortData(subjects);
-subjects = [subjects, all];
+% subjects = [subjects, all];
 
-subjects
+% subjects
 
 % 各データを検定結果付きで表示
 showData(subjects, 'PDT_RT_Graph.png');
@@ -207,7 +207,7 @@ function showOneData(subject,fileName)
     % disp([xStart; xEnd]);
     % disp([ytips+yStep,ytips+3*yStep,ytips+2*yStep;ytips+yStep,ytips+3*yStep,ytips+2*yStep]);
 
-    line([xStart; xEnd], [ytips+yStep,ytips+3*yStep,ytips+2*yStep;ytips+yStep,ytips+3*yStep,ytips+2*yStep], 'Color', 'k');
+    line([xStart; xEnd], [ytips+yStep,ytips+3*yStep,ytips+2*yStep;ytips+yStep,ytips+3*yStep,ytips+2*yStep], 'Color', 'k','LineWidth',2);
     text((xEnd + xStart)./2, [ytips+yStep,ytips+3*yStep,ytips+2*yStep], labels, 'HorizontalAlignment','center','VerticalAlignment','bottom');
 
 
@@ -219,7 +219,7 @@ function showOneData(subject,fileName)
     for i = 1:nbars
         x(i,:) = b(i).XEndPoints;
     end
-    errorbar(x.',Median, errorMin,errorMax, 'k', 'linestyle', 'none');
+    errorbar(x.',Median, errorMin,errorMax, 'k', 'linestyle', 'none','LineWidth',2);
 
     % グラフの装飾
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1]);
@@ -299,7 +299,7 @@ function showData(subjects,fileName)
             labels(i) = "";
         end
     end
-    line([xStart; xEnd], [ytips+yStep; ytips+yStep], 'Color', 'k');
+    line([xStart; xEnd], [ytips+yStep; ytips+yStep], 'Color', 'k','LineWidth',2);
     text((xStart + xEnd)./2, ytips+yStep, labels, 'HorizontalAlignment','center','VerticalAlignment','bottom');
 
     % 対照条件と遠方条件
@@ -325,7 +325,7 @@ function showData(subjects,fileName)
             labels(i) = "";
         end
     end
-    line([xStart; xEnd], [ytips+yStep; ytips+yStep], 'Color', 'k');
+    line([xStart; xEnd], [ytips+yStep; ytips+yStep], 'Color', 'k','LineWidth',2);
     text((xStart + xEnd)./2, ytips+yStep, labels, 'HorizontalAlignment','center','VerticalAlignment','bottom');
 
     % 近接条件と遠方条件
@@ -351,7 +351,7 @@ function showData(subjects,fileName)
             labels(i) = "";
         end
     end
-    line([xStart; xEnd], [ytips+yStep; ytips+yStep], 'Color', 'k');
+    line([xStart; xEnd], [ytips+yStep; ytips+yStep], 'Color', 'k','LineWidth',2);
     text((xStart + xEnd)./2, ytips+yStep, labels, 'HorizontalAlignment','center','VerticalAlignment','bottom');
 
 
@@ -362,7 +362,7 @@ function showData(subjects,fileName)
     for i = 1:nbars
         x(i,:) = b(i).XEndPoints;
     end
-    errorbar(x.',Median, errorMin,errorMax, 'k', 'linestyle', 'none');
+    errorbar(x.',Median, errorMin,errorMax, 'k', 'linestyle', 'none','LineWidth',2);
 
     % グラフの装飾
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1]);
