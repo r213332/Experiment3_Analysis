@@ -71,15 +71,21 @@ showOneData(all, 'PDT_RT_All_Graph.png');
 % disp(N_F_P);
 
 % MissRateの検定&描画
-% MissingRate = zeros(length(subjects), 3);
-% for i = 1:length(subjects)
-%     subject = subjects(i);
+MissingRate = zeros(length(subjects), 3);
+for i = 1:length(subjects)
+    subject = subjects(i);
 
-%     [controlMissRate, nearMissRate, farMissRate] = subject.getMissingRate();
-%     MissingRate(i,1) = controlMissRate;
-%     MissingRate(i,2) = nearMissRate;
-%     MissingRate(i,3) = farMissRate;
-% end
+    [controlMissRate, nearMissRate, farMissRate] = subject.getMissingRate();
+    MissingRate(i,1) = controlMissRate;
+    MissingRate(i,2) = nearMissRate;
+    MissingRate(i,3) = farMissRate;
+
+    disp(subject.name);
+    disp([controlMissRate * 80, nearMissRate * 80 , farMissRate * 80]);
+
+end
+% 全平均
+disp(mean(mean(MissingRate) * 80 ));
 % [s1_c_h,C_P] = swtest(MissingRate(:,1));
 % [s1_n_h,N_P] = swtest(MissingRate(:,2));
 % [s1_f_h,F_P] = swtest(MissingRate(:,3));
@@ -223,7 +229,7 @@ function showOneData(subject,fileName)
 
     % グラフの装飾
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1]);
-    fontsize(gcf,24,'points')
+    fontsize(gcf,36,'points')
     title("PDTへの反応時間（中央値）");
     ylabel("反応時間[s]");
     ylim([0, 0.65]);

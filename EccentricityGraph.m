@@ -89,7 +89,7 @@ missingFarRTRows = farTable(ismissing(farTable.RT), :);
 
 % PDTRTと偏心度の関係
 
-labelPos_x = 18;
+labelPos_x = 20;
 labelPos_y = 1.35;
 xLimit = [3.5,30];
 yLimit = [0.2,1.5];
@@ -100,7 +100,7 @@ plot(verifiedControlTable.HDegree,verifiedControlTable.RT,'o');
 xlim(xLimit);
 ylim(yLimit);
 xlabel('偏心度(水平)[°]');
-ylabel('応答時間[s]');
+ylabel('反応時間[s]');
 title('対照');
 lsline;
 mdl = fitlm(verifiedControlTable,'RT~HDegree');  % Create a linear regression model
@@ -114,7 +114,7 @@ plot(verifiedNearTable.HDegree,verifiedNearTable.RT,'o');
 xlim(xLimit);
 ylim(yLimit);
 xlabel('偏心度(水平)[°]');
-ylabel('応答時間[s]');
+ylabel('反応時間[s]');
 title('近傍');
 lsline;
 mdl = fitlm(verifiedNearTable,'RT~HDegree');  % Create a linear regression model
@@ -128,7 +128,7 @@ plot(verifiedFarTable.HDegree,verifiedFarTable.RT,'o');
 xlim(xLimit);
 ylim(yLimit);
 xlabel('偏心度(水平)[°]');
-ylabel('応答時間[s]');
+ylabel('反応時間[s]');
 lsline;
 title('遠方');
 mdl = fitlm(verifiedFarTable,'RT~HDegree');  % Create a linear regression model
@@ -137,14 +137,18 @@ R2_far = mdl.Rsquared.Ordinary;  % Get the R-squared value
 text(labelPos_x, labelPos_y + 0.1, ['a = ', num2str(a_far)]);
 text(labelPos_x, labelPos_y, ['R^2 = ', num2str(R2_far)]);
 
+set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0, 2, 1]);
+fontsize(gcf,36,'points')
+saveas(gcf, fullfile('./graphs', 'PDTRT_Degree_Graph.png'));
+
+figure;
 nexttile
 histogram(missingControlRTRows.HDegree);
 xlim([5,30]);
 ylim([0,100]);
 xlabel('偏心度(水平)[°]');
 ylabel('見逃し数[個]');
-title('対照miss');
-
+title('対照');
 
 nexttile
 histogram(missingNearRTRows.HDegree);
@@ -152,7 +156,7 @@ xlim([5,30]);
 ylim([0,100]);
 xlabel('偏心度(水平)[°]');
 ylabel('見逃し数[個]');
-title('近傍miss');
+title('近接');
 
 nexttile
 histogram(missingFarRTRows.HDegree);
@@ -160,11 +164,11 @@ xlim([5,30]);
 ylim([0,100]);
 xlabel('偏心度(水平)[°]');
 ylabel('見逃し数[個]');
-title('遠方miss');
+title('遠方');
 
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1]);
 fontsize(gcf,24,'points')
-saveas(gcf, fullfile('./graphs', 'PDTRT_Degree_Graph.png'));
+saveas(gcf, fullfile('./graphs', 'PDTMissing_Degree_Graph.png'));
 
 
 
