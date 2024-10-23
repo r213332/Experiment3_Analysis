@@ -142,28 +142,45 @@ fontsize(gcf,36,'points')
 saveas(gcf, fullfile('./graphs', 'PDTRT_Degree_Graph.png'));
 
 figure;
+StimulusHDegree = 5.5:1.2:28.3;
 nexttile
-histogram(missingControlRTRows.HDegree);
+% missingControlRTRows.HDegreeの要素をStimulusDegreeに基づいて集計
+[~, ~, controlBin] = histcounts(missingControlRTRows.HDegree, [StimulusHDegree, Inf]);
+controlCounts = accumarray(controlBin(controlBin > 0), 1, [length(StimulusHDegree), 1]);
+% 見逃し数から見逃し率を計算
+[~,~,controlIdx] = unique(controlTable.HDegree);
+controlMissRate = controlCounts ./ accumarray(controlIdx, 1);
+bar(StimulusHDegree, controlMissRate);
 xlim([5,30]);
-ylim([0,100]);
+ylim([0,1]);
 xlabel('偏心度(水平)[°]');
-ylabel('見逃し数[個]');
+ylabel('見逃し率[%]');
 title('対照');
 
 nexttile
-histogram(missingNearRTRows.HDegree);
+[~,~,nearBin] = histcounts(missingNearRTRows.HDegree, [StimulusHDegree, Inf]);
+nearCounts = accumarray(nearBin(nearBin > 0), 1, [length(StimulusHDegree), 1]);
+% 見逃し数から見逃し率を計算
+[~,~,nearIdx] = unique(nearTable.HDegree);
+nearMissRate = nearCounts ./ accumarray(nearIdx, 1);
+bar(StimulusHDegree, nearMissRate);
 xlim([5,30]);
-ylim([0,100]);
+ylim([0,1]);
 xlabel('偏心度(水平)[°]');
-ylabel('見逃し数[個]');
+ylabel('見逃し率[%]');
 title('近接');
 
 nexttile
-histogram(missingFarRTRows.HDegree);
+[~,~,farBin] = histcounts(missingFarRTRows.HDegree, [StimulusHDegree, Inf]);
+farCounts = accumarray(farBin(farBin > 0), 1, [length(StimulusHDegree), 1]);
+% 見逃し数から見逃し率を計算
+[~,~,farIdx] = unique(farTable.HDegree);
+farMissRate = farCounts ./ accumarray(farIdx, 1);
+bar(StimulusHDegree, farMissRate);
 xlim([5,30]);
-ylim([0,100]);
+ylim([0,1]);
 xlabel('偏心度(水平)[°]');
-ylabel('見逃し数[個]');
+ylabel('見逃し率[%]');
 title('遠方');
 
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1]);
