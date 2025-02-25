@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 import functions
 import numpy as np
@@ -44,10 +45,24 @@ def RT(subject: str):
     if not os.path.exists("./processedData/" + subject):
         os.makedirs("./processedData/" + subject)
 
-    shutil.copy(
-        "./data/" + subject + "/meta.json", "./processedData/" + subject + "/meta.json"
-    )
+    src_meta_path = "./data/" + subject + "/meta.json"
+    dst_meta_path = "./processedData/" + subject + "/meta.json"
 
+    with open(src_meta_path, "r", encoding="utf-8") as f:
+        meta_data = json.load(f)
+
+    # "name" と "number" を削除
+    meta_data["name"] = ""
+    meta_data["number"] = ""
+
+    # 元ファイルに上書き
+    with open(src_meta_path, "w", encoding="utf-8") as f:
+        json.dump(meta_data, f, indent=4)
+
+    # コピー先ファイルにも書き込み
+    with open(dst_meta_path, "w", encoding="utf-8") as f:
+        json.dump(meta_data, f, indent=4)
+        
     pd.DataFrame(
         {
             "RT": [x["RT"] for x in control],
